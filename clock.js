@@ -19,7 +19,10 @@ function UpdateTime(timeDiference) {
   this.onloadPage = function (view) {
     myView = view;
     this.timeUpdate();
-    setInterval(this.timeUpdate, 1000);
+    
+    setInterval(() => {
+      this.timeUpdate()
+    }, 1000);
   };
 
   this.timeUpdate = function () {
@@ -29,7 +32,6 @@ function UpdateTime(timeDiference) {
     this.minute = currTime.getUTCMinutes();
     this.second = currTime.getUTCSeconds();
     myView.degUpdate();
-    console.log(this)
   };
   this.onclickStart = function () {
     

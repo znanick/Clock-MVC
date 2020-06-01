@@ -9,7 +9,7 @@ modelDOM1.onloadPage(viewDOM1);
 controllerDom1.onloadPage(modelDOM1, containerElem1);
 
 
-var modelDOM2 = new UpdateTime(-2);
+var modelDOM2 = new UpdateTime(+2);
 var viewDOM2 = new ClockViewDOM("clock2");
 var controllerDom2 = new ClockController();
 
@@ -19,7 +19,7 @@ modelDOM2.onloadPage(viewDOM2);
 controllerDom2.onloadPage(modelDOM2, containerElem2);
 
 var modelSVG3 = new UpdateTime(-12);
-var viewSVG3 = new ClockViewDOM("clockSVG1");
+var viewSVG3 = new ClockViewSVG("clockSVG1");
 
 
 var containerElem1 = document.getElementById("clockSVG1");

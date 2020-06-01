@@ -19,7 +19,10 @@ function ClockViewDOM(clockDiv) {
     utc.style.position = "absolute";
     utc.style.top = "2px";
     utc.style.left = "115px";
-    var utcStr = (myModel.timeDiference <= 0) ? myModel.timeDiference : '+' + myModel.timeDiference;
+    var utcStr =
+      myModel.timeDiference <= 0
+        ? myModel.timeDiference
+        : "+" + myModel.timeDiference;
     utc.innerHTML = "UTC" + " " + utcStr;
 
     //циферблат
@@ -60,7 +63,7 @@ function ClockViewDOM(clockDiv) {
     this.circle.appendChild(this.hourArrow);
     var dHourArrow = 55; //длина стрелки
     this.hourArrow.style.backgroundColor = "black";
-    this.hourArrow.style.width = "6px";
+    this.hourArrow.style.width = "4px";
     this.hourArrow.style.height = dHourArrow + "px";
     this.hourArrow.style.borderRadius = "60% / 5%";
     this.hourArrow.style.position = "absolute";
@@ -68,12 +71,10 @@ function ClockViewDOM(clockDiv) {
     this.hourArrow.style.top = "50px";
     this.hourArrow.style.left = "100px";
 
-    
-
     this.circle.appendChild(this.minuteArrow);
     var dMinuteArrow = 70; //длина стрелки
     this.minuteArrow.style.backgroundColor = "black";
-    this.minuteArrow.style.width = "4px";
+    this.minuteArrow.style.width = "2px";
     this.minuteArrow.style.height = dMinuteArrow + "px";
     this.minuteArrow.style.borderRadius = "60% / 5%";
     this.minuteArrow.style.position = "absolute";
@@ -84,7 +85,7 @@ function ClockViewDOM(clockDiv) {
     this.circle.appendChild(this.secondArrow);
     var dSecondArrow = 80; //длина стрелки
     this.secondArrow.style.backgroundColor = "black";
-    this.secondArrow.style.width = "2px";
+    this.secondArrow.style.width = "1px";
     this.secondArrow.style.height = dSecondArrow + "px";
     this.secondArrow.style.borderRadius = "60% / 5%";
     this.secondArrow.style.position = "absolute";
@@ -94,56 +95,54 @@ function ClockViewDOM(clockDiv) {
   };
 
   this.degUpdate = function () {
-    this.hourDeg = 30 * (myModel.hour + (1 / 60) * myModel.minute);
-    this.minuteDeg = 6 * (myModel.minute + (1 / 60) * myModel.second);
-    this.secondDeg = 6 * myModel.second;
-    this.secondArrow.style.transform = `rotate(${this.secondDeg}deg)`;
-    this.hourArrow.style.transform = `rotate(${this.hourDeg}deg)`;
-    this.minuteArrow.style.transform = `rotate(${this.minuteDeg}deg)`;
+    var hourDeg = 30 * (myModel.hour + (1 / 60) * myModel.minute);
+    var minuteDeg = 6 * (myModel.minute + (1 / 60) * myModel.second);
+    var secondDeg = 6 * myModel.second;
+    this.secondArrow.style.transform = `rotate(${secondDeg}deg)`;
+    this.hourArrow.style.transform = `rotate(${hourDeg}deg)`;
+    this.minuteArrow.style.transform = `rotate(${minuteDeg}deg)`;
   };
 }
 
-
 function ClockViewSVG(clockDiv) {
   this.clock = document.getElementById(clockDiv); //див в котором находятся часы
-  this.circle = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-  var secondArrow = document.createElementNS("http://www.w3.org/2000/svg",'line');
-  var minuteArrow = document.createElementNS("http://www.w3.org/2000/svg",'line');
-  var hourArrow = document.createElementNS("http://www.w3.org/2000/svg",'line');
+  this.circle = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "circle"
+  );
+  var secondArrow = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "line"
+  );
+  var minuteArrow = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "line"
+  );
+  var hourArrow = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "line"
+  );
 
-
-
-  var utc = document.createElement("div");
 
   var myModel = null;
 
   this.onloadPage = function (model) {
     myModel = model;
-    //часовой пояс
-    this.clock.appendChild(utc);
-    utc.style.fontSize = "15px";
-    utc.style.position = "absolute";
-    utc.style.top = "2px";
-    utc.style.left = "115px";
 
-    utc.innerHTML = "UTC" + " " + myModel.timeDiference;
 
-  
     //циферблат
     this.clock.appendChild(this.circle);
     this.circle.setAttribute("cx", `${circleRadius}`);
-    this.circle.setAttribute("cy", `${circleRadius }`);
+    this.circle.setAttribute("cy", `${circleRadius}`);
     this.circle.setAttribute("r", `${circleRadius}`);
     this.circle.setAttribute("fill", "#fcca66");
-    
-
 
     //часовые значения
     var valRadius = circleRadius * 0.15;
     var angle = 360;
     for (var i = 11; i >= 0; i--) {
       var val; //часовые значения
-      val = document.createElementNS("http://www.w3.org/2000/svg",'circle');
+      val = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       this.clock.appendChild(val);
       val.innerHTML = i + 1;
       val.style.textAlign = "center";
@@ -151,63 +150,62 @@ function ClockViewSVG(clockDiv) {
       var angleRad = (angle / 180) * Math.PI;
       angle = angle - 30;
       var valX = Math.round(
-        circleRadius + (circleRadius * 0.8) * Math.sin(angleRad) 
+        circleRadius + circleRadius * 0.8 * Math.sin(angleRad)
       );
       var valY = Math.round(
-        circleRadius - (circleRadius * 0.8) * Math.cos(angleRad) 
+        circleRadius - circleRadius * 0.8 * Math.cos(angleRad)
       );
-      val.setAttribute("cx",`${valX}`);
-      val.setAttribute("cy",`${valY}`);
-      val.setAttribute("r",`${valRadius}`);
-      val.setAttribute("fill","#48b382");
+      val.setAttribute("cx", `${valX}`);
+      val.setAttribute("cy", `${valY}`);
+      val.setAttribute("r", `${valRadius}`);
+      val.setAttribute("fill", "#48b382");
 
-      var txt = document.createElementNS("http://www.w3.org/2000/svg",'text');
+      var txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
       this.clock.appendChild(txt);
       txt.innerHTML = i + 1;
-      txt.setAttribute("x",`${valX}`);
-      txt.setAttribute("y",`${valY + 5}`);
-      txt.style.textAnchor = 'middle';
+      txt.setAttribute("x", `${valX}`);
+      txt.setAttribute("y", `${valY + 5}`);
+      txt.style.textAnchor = "middle";
     }
 
-    //стрелки 
+    //стрелки
     this.clock.appendChild(secondArrow);
-    secondArrow.setAttribute('x1',circleRadius);
-    secondArrow.setAttribute('y1',circleRadius);
-    secondArrow.setAttribute('x2',circleRadius );
-    secondArrow.setAttribute('y2','20');
-    secondArrow.setAttribute('stroke','black');
-    secondArrow.setAttribute('stroke-width','3');
-    secondArrow.setAttribute('stroke-linecap','round');
-    secondArrow.style.transformOrigin = 'center';
+    secondArrow.setAttribute("x1", circleRadius);
+    secondArrow.setAttribute("y1", circleRadius + 5);
+    secondArrow.setAttribute("x2", circleRadius);
+    secondArrow.setAttribute("y2", "20");
+    secondArrow.setAttribute("stroke", "black");
+    secondArrow.setAttribute("stroke-width", "1");
+    secondArrow.setAttribute("stroke-linecap", "round");
+    secondArrow.style.transformOrigin = "center";
 
     this.clock.appendChild(minuteArrow);
-    minuteArrow.setAttribute('x1',circleRadius);
-    minuteArrow.setAttribute('y1',circleRadius);
-    minuteArrow.setAttribute('x2',circleRadius);
-    minuteArrow.setAttribute('y2','30');
-    minuteArrow.setAttribute('stroke','black');
-    minuteArrow.setAttribute('stroke-width','4');
-    minuteArrow.setAttribute('stroke-linecap','round');
-    minuteArrow.style.transformOrigin = 'center';
+    minuteArrow.setAttribute("x1", circleRadius);
+    minuteArrow.setAttribute("y1", circleRadius + 5);
+    minuteArrow.setAttribute("x2", circleRadius + 5);
+    minuteArrow.setAttribute("y2", "30");
+    minuteArrow.setAttribute("stroke", "black");
+    minuteArrow.setAttribute("stroke-width", "2");
+    minuteArrow.setAttribute("stroke-linecap", "round");
+    minuteArrow.style.transformOrigin = "center";
 
     this.clock.appendChild(hourArrow);
-    hourArrow.setAttribute('x1',circleRadius);
-    hourArrow.setAttribute('y1',circleRadius);
-    hourArrow.setAttribute('x2',circleRadius);
-    hourArrow.setAttribute('y2','45');
-    hourArrow.setAttribute('stroke','black');
-    hourArrow.setAttribute('stroke-width','7');
-    hourArrow.setAttribute('stroke-linecap','round');
-    hourArrow.style.transformOrigin = 'center';
-
-  }
+    hourArrow.setAttribute("x1", circleRadius);
+    hourArrow.setAttribute("y1", circleRadius);
+    hourArrow.setAttribute("x2", circleRadius);
+    hourArrow.setAttribute("y2", "45");
+    hourArrow.setAttribute("stroke", "black");
+    hourArrow.setAttribute("stroke-width", "4");
+    hourArrow.setAttribute("stroke-linecap", "round");
+    hourArrow.style.transformOrigin = "center";
+  };
 
   this.degUpdate = function () {
-    this.hourDeg = 30 * (myModel.hour + (1 / 60) * myModel.minute);
-    this.minuteDeg = 6 * (myModel.minute + (1 / 60) * myModel.second);
-    this.secondDeg = 6 * myModel.second;
-    this.secondArrow.style.transform = `rotate(${this.secondDeg}deg)`;
-    this.hourArrow.style.transform = `rotate(${this.hourDeg}deg)`;
-    this.minuteArrow.style.transform = `rotate(${this.minuteDeg}deg)`;
+    var hourDeg = 30 * (myModel.hour + (1 / 60) * myModel.minute);
+    var minuteDeg = 6 * (myModel.minute + (1 / 60) * myModel.second);
+    var secondDeg = 6 * myModel.second;
+    secondArrow.style.transform = `rotate(${secondDeg}deg)`;
+    hourArrow.style.transform = `rotate(${hourDeg}deg)`;
+    minuteArrow.style.transform = `rotate(${minuteDeg}deg)`;
   };
 }

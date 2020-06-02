@@ -12,6 +12,7 @@ function UpdateTime(timeDiference) {
   this.minute = 0;
   this.second = 0;
   this.timerID;
+  this.timer = 0; //будем фиксировать состояние таймеро 0 - часы стоят  1 - часы идут
   var currTime = new Date();
   var myView = null;
 
@@ -24,6 +25,7 @@ function UpdateTime(timeDiference) {
     this.timerID = setInterval(() => {
       this.timeUpdate();
     }, 1000);
+    this.timer = 1;
   };
 
   this.timeUpdate = function () {
@@ -35,14 +37,16 @@ function UpdateTime(timeDiference) {
   };
 
   this.onclickStart = function () {
-    if (!this.timerID) {
+    if (this.timer == 0) {
       this.timerID = setInterval(() => {
         this.timeUpdate();
       }, 1000);
+      this.timer = 1;
     }
   };
 
   this.onclickStop = function () {
     clearInterval(this.timerID);
+    this.timer = 0;
   };
 }

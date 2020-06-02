@@ -22,7 +22,7 @@ function UpdateTime(timeDiference) {
     myView = view;
     this.timeUpdate();
 
-    this.timerID = setInterval(() => {
+    this.timerID = setTimeout(() => {
       this.timeUpdate();
     }, 1000);
     this.timer = 1;
@@ -34,19 +34,22 @@ function UpdateTime(timeDiference) {
     this.minute = currTime.getUTCMinutes();
     this.second = currTime.getUTCSeconds();
     myView.degUpdate();
+    this.timerID = setTimeout(() => {
+      this.timeUpdate();
+    }, 1020);
   };
 
   this.onclickStart = function () {
     if (this.timer == 0) {
-      this.timerID = setInterval(() => {
+      this.timerID = setTimeout(() => {
         this.timeUpdate();
-      }, 1000);
+      }, 1020);
       this.timer = 1;
     }
   };
 
   this.onclickStop = function () {
-    clearInterval(this.timerID);
+    clearTimeout(this.timerID);
     this.timer = 0;
   };
 }

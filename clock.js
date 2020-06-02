@@ -11,6 +11,7 @@ function UpdateTime(timeDiference) {
   this.hour = 0;
   this.minute = 0;
   this.second = 0;
+  this.timerID;
   var currTime = new Date();
   var myView = null;
 
@@ -19,24 +20,29 @@ function UpdateTime(timeDiference) {
   this.onloadPage = function (view) {
     myView = view;
     this.timeUpdate();
-    
-    setInterval(() => {
-      this.timeUpdate()
+
+    this.timerID = setInterval(() => {
+      this.timeUpdate();
     }, 1000);
   };
 
   this.timeUpdate = function () {
-
     currTime = new Date();
     this.hour = currTime.getUTCHours() + this.timeDiference;
     this.minute = currTime.getUTCMinutes();
     this.second = currTime.getUTCSeconds();
     myView.degUpdate();
   };
+
   this.onclickStart = function () {
-    
+    if (!this.timerID) {
+      this.timerID = setInterval(() => {
+        this.timeUpdate();
+      }, 1000);
+    }
   };
 
-  this.onclickStop = function () {};
-  
+  this.onclickStop = function () {
+    clearInterval(this.timerID);
+  };
 }
